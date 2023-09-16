@@ -1,8 +1,8 @@
-import { DataSource } from 'typeorm';
-import { Transaction } from '../src/entities/transaction.entity';
+// import { DataSource } from 'typeorm';
+import { Transaction } from '../src/transaction/transaction.entity';
 import { InitialMigration1693046867311 } from '../migrations/1693046867311-InitialMigration';
 
-export const AppDataSource = new DataSource({
+export const AppDataSource = {
   type: 'postgres',
   host: `${process.env.DATABASE_HOST}`,
   port: Number(process.env.DATABASE_PORT),
@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   logging: true,
   migrations: [InitialMigration1693046867311],
-});
+};
 
 // AppDataSource.initialize()
 //   .then(() => {
