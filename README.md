@@ -15,19 +15,14 @@
 
 ## Решение
 
-```bash
-$ npm install
-```
+0. Уточнить некорректности в задании: формально начальный номер блока - последний блок на начало работы сервиса
+
+1. Создать сервис SaveBlocksService с cron (основная его логика описана в /docs/plan.md), также создать TransactionService, который будет обрабатывать транзакции
+
+2.
 
 ## Инструкция по использованию
 
 ```bash
-# development
 $ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
