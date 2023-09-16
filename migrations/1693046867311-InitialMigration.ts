@@ -12,8 +12,12 @@ export class InitialMigration1693046867311 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: 'blockNumber',
+            name: 'blockNumberHex',
             type: 'string',
+          },
+          {
+            name: 'blockNumberDec',
+            type: 'number',
           },
           {
             name: 'from',

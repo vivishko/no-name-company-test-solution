@@ -6,7 +6,10 @@ export class Transaction {
   hash: string;
 
   @Column()
-  blockNumber: string;
+  blockNumberHex: string;
+
+  @Column()
+  blockNumberDec: number;
 
   @Column()
   from: string;
