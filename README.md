@@ -7,6 +7,8 @@
 1. Написать cron-job сервис, который в фоновом режиме сохраняет в Postgres информацию о транзакциях во всех блоках начиная с 17583000 (в режиме реального времени, частота - раз в минуту).
 2. Написать API-сервис с эндпоинтом, который выдаст адрес, баланс которого изменился больше остальных (по абсолютной величине) за последние 100 блоков.
 
+Полное описание [в папке docs в файле description.md](https://github.com/vivishko/no-name-company-test-solution/blob/main/docs/description.md).
+
 ## Tech stack
 
 #### Backend: Node.js + Typescript + Nest.js + TypeORM
@@ -26,3 +28,5 @@
 ```bash
 $ npm run start
 ```
+
+## TODO
