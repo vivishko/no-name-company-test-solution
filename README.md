@@ -26,7 +26,19 @@
 ## Инструкция по использованию
 
 ```bash
-$ npm run start
+$ git clone
+```
+
+```bash
+$ npm install
+```
+
+```bash
+$ npm run build
+```
+
+```bash
+$ npm run migration:run
 ```
 
 ## TODO
