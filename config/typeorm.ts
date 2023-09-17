@@ -1,8 +1,12 @@
-// import { DataSource } from 'typeorm';
+import 'reflect-metadata';
+import * as dotenv from 'dotenv';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { Transaction } from '../src/transaction/transaction.entity';
 import { InitialMigration1693046867311 } from '../migrations/1693046867311-InitialMigration';
 
-export const AppDataSource = {
+dotenv.config();
+
+export const AppDataSourceOptions: DataSourceOptions = {
   type: 'postgres',
   host: `${process.env.DATABASE_HOST}`,
   port: Number(process.env.DATABASE_PORT),
@@ -15,10 +19,13 @@ export const AppDataSource = {
   migrations: [InitialMigration1693046867311],
 };
 
-// AppDataSource.initialize()
-//   .then(() => {
-//     console.log('Data Source has been initialized!');
-//   })
-//   .catch((err) => {
-//     console.error('Error during Data Source initialization', err);
-//   });
+const AppDataSource = new DataSource(AppDataSourceOptions);
+export default AppDataSource;
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log('Data Source has been initialized!');
+  })
+  .catch((err) => {
+    console.error('Error during Data Source initialization', err);
+  });

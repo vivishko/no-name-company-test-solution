@@ -4,32 +4,32 @@ export class InitialMigration1693046867311 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'question',
+        name: 'transaction',
         columns: [
           {
             name: 'hash',
-            type: 'string',
+            type: 'varchar',
             isPrimary: true,
           },
           {
             name: 'blockNumberHex',
-            type: 'string',
+            type: 'varchar',
           },
           {
             name: 'blockNumberDec',
-            type: 'number',
+            type: 'int',
           },
           {
             name: 'from',
-            type: 'string',
+            type: 'varchar',
           },
           {
             name: 'to',
-            type: 'string',
+            type: 'varchar',
           },
           {
             name: 'value',
-            type: 'string',
+            type: 'varchar',
           },
         ],
       }),
@@ -38,6 +38,6 @@ export class InitialMigration1693046867311 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('question');
+    await queryRunner.dropTable('transaction');
   }
 }
