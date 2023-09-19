@@ -34,11 +34,11 @@ $ npm install
 ```
 
 ```bash
-$ npm run build
+$ npm run migration:run
 ```
 
 ```bash
-$ npm run migration:run
+$ npm run start
 ```
 
 ## TODO

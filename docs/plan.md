@@ -6,9 +6,56 @@
 
 1. проверить номер последнего блока в бд
 2. запросить номер последнего блока в сети сейчас
-3. вычислить разницу в количестве блоков
-4. выполнить рассчёт таймаутов между запросами согласно рейтлимиту
-5. выполнить запрос на инфо о блоке по таймауту
+3. с интервалом в 200мс (согласно рейтлимиту в 5 запросов в сек) запускать функцию запроса и записи в бд
+4. выполнить запрос на инфо о блоке по таймауту
+
+---
+
+черновик
+
+// решение номер 1
+// вычислить разницу в количестве блоков
+// const diff = lastBlockInDec - lastDbBlockInDec;
+// выполнить рассчёт таймаутов между запросами согласно рейтлимиту
+// выполнить запрос на инфо о блоке по таймауту
+// for (let i = 0; i < diff; i++) {
+// const timeoutMs = i < 5 ? 250 : 200;
+// setTimeout(async () => {
+// const blockNum = lastBlockInDec + i;
+// const blockTrxs =
+// await this.transactionService.getNewTrxsByBlockNumber(
+// blockNum.toString(16),
+// );
+// console.log('blockTrxs = \n', blockTrxs);
+// const insertedIds =
+// await this.transactionService.insertTrxs(blockTrxs);
+// console.log(
+// 'insertedIdsCount = ',
+// insertedIds.length,
+// '\ninsertedIds = \n',
+// insertedIds,
+// );
+// }, timeoutMs);
+// }
+
+// решение номер 2
+// async function hui(id) {
+// try{
+// const res = await fetch(id);
+// <!-- setTimeout(() => hui(id++), 200); -->
+// } catch (err) {
+// }
+// }
+// function chlen() {
+// const arr = [1,2,3,4,5];
+// const timerId = setInterval(() => {
+// if(arr.length < 1) {
+// clearInterval(timerId)
+// } else {
+// hui(arr.shift())
+// }
+// }, 1000)
+// }
 
 ---
 
