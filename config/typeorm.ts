@@ -15,7 +15,8 @@ export const AppDataSourceOptions: DataSourceOptions = {
   database: `${process.env.DATABASE_NAME}`,
   entities: [Transaction],
   synchronize: false,
-  logging: true,
+  // logging: true, // выводит всё, в том числе queries
+  logging: ['error'], // выводить только ошибки
   migrations: [InitialMigration1693046867311],
 };
 
