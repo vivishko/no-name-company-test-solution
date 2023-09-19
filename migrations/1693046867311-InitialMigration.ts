@@ -26,6 +26,7 @@ export class InitialMigration1693046867311 implements MigrationInterface {
           {
             name: 'to',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'value',
