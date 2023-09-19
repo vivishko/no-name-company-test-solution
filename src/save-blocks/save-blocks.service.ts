@@ -19,51 +19,75 @@ export class SaveBlocksService {
 
   private async saveNewBlocks() {
     // проверить номер последнего блока в бд
-    const lastDbBlockInHex = await this.transactionService.getLastBlockNumber();
+    const lastDbBlockInDec = await this.transactionService.getLastBlockNumber();
+
+    // console.log('lastDbBlockInDec = ', lastDbBlockInDec);
 
     // запросить номер последнего блока в сети сейчас
     const fetchResult = await getLastBlockNumber();
     const lastBlockInHex = fetchResult.result;
     const lastBlockInDec = parseInt(lastBlockInHex, 16);
 
+    // console.log(
+    //   'lastBlockInHex = ',
+    //   lastBlockInHex,
+    //   'lastBlockInDec = ',
+    //   lastBlockInDec,
+    // );
+
     // обработать пустую бд
-    if (lastDbBlockInHex === undefined) {
+    if (!lastDbBlockInDec) {
+      this.logger.log('БД пустая');
       // записать в бд транзы из последнего блока
+      await this.saveTrxsByBlockNumber(lastBlockInHex);
+      this.logger.log('Были записаны транзакции последнего блока');
+    } else {
+      this.logger.log('БД не пустая');
+      // создать массив с номерами отсутствующих в бд блоков
+      const arr = [];
+      for (let i = lastDbBlockInDec; i < lastBlockInDec; i++) {
+        arr.push((i + 1).toString(16));
+      }
+      // console.log(arr);
+
+      // вызывать функцию запроса данных о блоке и записи в бд
+      // раз в какой-то промежуток
+      const timerId = setInterval(async () => {
+        if (arr.length < 1) {
+          clearInterval(timerId);
+        } else {
+          await this.saveTrxsByBlockNumber(arr.shift());
+          // console.log(arr);
+        }
+      }, 200);
+      this.logger.log(
+        'Запись транзакций будет выполняться с ',
+        'определённым интервалом согласно рейтлимиту',
+      );
+    }
+
+    this.logger.debug('Cron выполнен');
+  }
+
+  async saveTrxsByBlockNumber(blockNumInHex) {
+    try {
       const newTrxs =
-        await this.transactionService.getNewTrxsByBlockNumber(lastBlockInHex);
+        await this.transactionService.getNewTrxsByBlockNumber(blockNumInHex);
       const insertedIds = await this.transactionService.insertTrxs(newTrxs);
 
-      // вывод
+      // output for checking
       if (insertedIds) {
-        console.log(insertedIds);
+        console.log(
+          'insertedIdsCount для блока ',
+          blockNumInHex,
+          ' = ',
+          insertedIds.length,
+        );
       } else {
         console.log('insert операция неуспешна');
       }
-    } else {
-      // преобразовать lastDbBlockInHex в десятичную
-      const lastDbBlockInDec = parseInt(lastDbBlockInHex, 16);
-
-      // вычислить разницу в количестве блоков
-      const diff = lastBlockInDec - lastDbBlockInDec;
-
-      // выполнить рассчёт таймаутов между запросами согласно рейтлимиту
-      // выполнить запрос на инфо о блоке по таймауту
-      for (let i = 0; i < diff; i++) {
-        const timeoutMs = i < 5 ? 250 : 200;
-        setTimeout(async () => {
-          const blockNum = lastBlockInDec + i;
-          const blockTrxs =
-            await this.transactionService.getNewTrxsByBlockNumber(
-              blockNum.toString(16),
-            );
-          console.log('blockTrxs = \n', blockTrxs);
-          const insertedIds =
-            await this.transactionService.insertTrxs(blockTrxs);
-          console.log('insertedIds = \n', insertedIds);
-        }, timeoutMs);
-      }
+    } catch (err) {
+      console.log('catched an error: ', err);
     }
-
-    this.logger.debug('Cron Job выполнен');
   }
 }

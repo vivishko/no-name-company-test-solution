@@ -21,8 +21,23 @@ export class TransactionService {
     const response = await getBlockInfo(blockNumber);
     const result = response.result;
 
+    // console.log(result);
+
     // приведение к типу Transaction[]
-    const trxs: Transaction[] = result.transactions.filter((trx: any) => {
+    const trxs: Transaction[] = result.transactions.map((trx: any) => {
+      // if (trx.to === null) {
+      //   console.log(
+      //     'block with trx.to === null information:',
+      //     '\nblockNumberHex =',
+      //     trx.blockNumber,
+      //     '\nblockNumberDec = ',
+      //     parseInt(trx.blockNumber, 16),
+      //     '\nhash = ',
+      //     trx.hash,
+      //     '\nto = ',
+      //     trx.to,
+      //   );
+      // }
       return {
         hash: trx.hash,
         blockNumberHex: trx.blockNumber,
@@ -32,11 +47,14 @@ export class TransactionService {
         value: trx.value,
       };
     });
-
     return trxs;
   }
 
-  async getLastBlockNumber(): Promise<string | undefined> {
+  /**
+   *
+   * @returns hex number of the las block in eth network
+   */
+  async getLastBlockNumber(): Promise<number | undefined> {
     const lastBlockNumber = await this.transactionsRepository
       .createQueryBuilder('transaction')
       .select('MAX(transaction.blockNumberDec)', 'max')
@@ -45,6 +63,11 @@ export class TransactionService {
     return lastBlockNumber?.max;
   }
 
+  /**
+   * insert trxs in a database
+   * @param trxs Transaction or array of Transaction
+   * @returns ids of inserted trxs
+   */
   async insertTrxs(trxs: Transaction[] | Transaction): Promise<any[]> {
     const operationRes = await this.transactionsRepository.insert(trxs);
     return operationRes.identifiers;

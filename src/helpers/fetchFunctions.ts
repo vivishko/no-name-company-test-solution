@@ -9,11 +9,13 @@ export async function getLastBlockNumber(): Promise<{
     'https://api.etherscan.io/api' +
     '?module=proxy' +
     '&action=eth_blockNumber' +
-    '&apikey=YourApiKeyToken';
+    '&apikey=' +
+    process.env.ETHERSCAN_API_KEY;
   const response = await fetch(url, {
     method: 'GET',
   });
-  const data = response.json() as any;
+  const data = await response.json();
+  // console.log('response = ', data);
   return data;
 }
 
@@ -29,10 +31,12 @@ export async function getBlockInfo(tag: string): Promise<{
     '&tag=' +
     tag +
     '&boolean=true' +
-    '&apikey=YourApiKeyToken';
+    '&apikey=' +
+    process.env.ETHERSCAN_API_KEY;
   const response = await fetch(url, {
     method: 'GET',
   });
-  const data = response.json() as any;
+  const data = await response.json();
+  // console.log('response = ', data);
   return data;
 }
