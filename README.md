@@ -25,17 +25,35 @@
 
 ## Инструкция по использованию
 
+1. Склонировать репо
+
+По ssh
+
 ```bash
-$ git clone
+$ git clone git@github.com:vivishko/no-name-company-test-solution.git
 ```
+
+По https
+
+```bash
+$ git clone https://github.com/vivishko/no-name-company-test-solution.git
+```
+
+2. Установить зависимости
 
 ```bash
 $ npm install
 ```
 
+3. Настроить окружение: создать файл .env в корне проекта, скопировать туда содержание .example.env и изменить значения переменных на существующие
+
+4. Произвести миграцию
+
 ```bash
 $ npm run migration:run
 ```
+
+5. Запустить проект
 
 ```bash
 $ npm run start
