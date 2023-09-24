@@ -64,6 +64,24 @@ export class TransactionService {
   }
 
   /**
+   * if there is less than 100 blocks - it returns just all trxs
+   * @returns trxs in last 100 blocks
+   */
+  async getTrxsFromLastBlocks(): Promise<Transaction[]> {
+    const trxs = await this.transactionsRepository
+      .createQueryBuilder('transaction')
+      .where(
+        '"transaction"."blockNumberDec" IN (SELECT DISTINCT "blockNumberDec" FROM "transaction" ORDER BY "blockNumberDec" DESC LIMIT 100)',
+      )
+      .orderBy({
+        '"transaction"."blockNumberDec"': 'DESC',
+        '"transaction"."hash"': 'DESC',
+      })
+      .getMany();
+    return trxs;
+  }
+
+  /**
    * insert trxs in a database
    * @param trxs Transaction or array of Transaction
    * @returns ids of inserted trxs
